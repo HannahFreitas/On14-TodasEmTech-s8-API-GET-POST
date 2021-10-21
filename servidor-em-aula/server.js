@@ -2,7 +2,7 @@ const express = require("express")
 const app = express()
 const filmesJson = require("./data/ghibli.json")
 const cors = require("cors")
-const { application } = require("express")
+
 
 app.use(cors())
 app.use(express.json())
@@ -18,6 +18,13 @@ app.get("/", (req, res) => {
 
 app.get("/filmes", (req, res) => {
     res.status(200).send(filmesJson)
+})
+
+app.get("/filmes/filtro", (req, res) => {
+    let tituloRequest = req.query.titulo.toLocaleLowerCase()
+    let filmeEncontrado = filmesJson.filter(filme => filme.title.toLowerCase().includes(tituloRequest))
+
+    res.status(200).send(filmeEncontrado)
 })
 
 app.get("/filmes/:id", (req, res) => {
